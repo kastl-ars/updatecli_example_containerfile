@@ -44,6 +44,7 @@ scms:
       branch: "main"
       # username is only required for private repositories
       token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+      commitUsingApi: true
 
 actions:
   default:
