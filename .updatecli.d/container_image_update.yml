@@ -1,0 +1,51 @@
+---
+name: "Bump the nginx image version in the Dockerfile"
+
+sources:
+  nginx-release:
+    kind: "githubrelease"
+    name: "Get the latest nginx version"
+    spec:
+      owner: "nginx"
+      repository: "nginx"
+      token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+      username: "kastl-ars"
+      typefilter:
+        latest: true
+    transformers:
+      - trimprefix: "release-"
+
+conditions:
+  docker:
+    name: "Nginx container image published on DockerHub"
+    kind: dockerimage
+    spec:
+      image: "docker.io/library/nginx"
+      architecture: "linux/amd64"
+
+targets:
+  updatecli_example_containerfile:
+    name: "Update the FROM statement in the Dockerfile"
+    scmid: "updatecli_example_containerfile"
+    sourceid: "nginx-release"
+    kind: dockerfile
+    spec:
+      file: Dockerfile
+      instruction:
+        keyword: FROM
+        matcher: docker.io/library/nginx
+
+scms:
+  updatecli_example_containerfile:
+    kind: "github"
+    spec:
+      owner: "kastl-ars"
+      repository: "updatecli_example_containerfile"
+      branch: "main"
+      # username is only required for private repositories
+      token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+
+actions:
+  default:
+    kind: "github/pullrequest"
+    scmid: "updatecli_example_containerfile"
