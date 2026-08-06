@@ -1,6 +1,6 @@
 ---
 #
-name: Create and publish a container image
+name: Create a container image
 
 on:
   push:
