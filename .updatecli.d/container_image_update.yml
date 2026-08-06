@@ -42,6 +42,7 @@ scms:
       owner: "kastl-ars"
       repository: "updatecli_example_containerfile"
       branch: "main"
+      # username is required for pushing the branch
       username: "kastl-ars"
       token: '{{ requiredEnv "GITHUB_TOKEN" }}'
       commitUsingApi: true
